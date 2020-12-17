@@ -1,19 +1,35 @@
-// SPDX-License-Identifier: MIT
 pragma solidity >=0.4.22 <0.9.0;
 
-contract Migrations {
-  address public owner = msg.sender;
-  uint public last_completed_migration;
+contract Borrow {
 
-  modifier restricted() {
-    require(
-      msg.sender == owner,
-      "This function is restricted to the contract's owner"
-    );
-    _;
-  }
+    address payable public deployer;
 
-  function setCompleted(uint completed) public restricted {
-    last_completed_migration = completed;
-  }
+    address payable public renter;
+    address payable public client;
+
+    uint256 public value;
+    //uint public daily;
+
+    event Created(uint val, uint day);
+
+    constructor(address payable inRenter, address payable inClient) public{
+        deployer = msg.sender;
+
+        renter = inRenter;
+        client = inClient;
+
+        value = 0;
+    }
+
+    function () external payable {
+        require (client == msg.sender);
+        value += msg.value;
+    }
+
+    function sendValueToRenter () public {
+        require (deployer == msg.sender);
+
+        renter.transfer(value);
+    }
+
 }

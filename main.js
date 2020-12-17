@@ -121,14 +121,6 @@ const renter = '0x7E4D7a33aBd9B3ab7e15c41854df78d785D01B53';
 const client = '0xCB5C5f61e4bACaF28bE01C5cC3cACcdE07899Fce';
 
 
-//const contract = new web3.eth.Contract(contractAbi, address)
-
-//const contract = require('./smartContract.sol')
-
-// web3.eth.getBlock('latest', (err, result) => {
-//     console.log(result);
-// })
-
 const getBalances = async (address) => {
     const balance = await web3.eth.getBalance(address).then(console.log)
     return balance;
@@ -148,10 +140,10 @@ const run = async () => {
     SmartContract.setProvider(rpcURL);
 
     const smartContract = await SmartContract.new(
-        renter, client, {gas: 20000000, from: deployer}
+        renter, client, {gas: 200000, from: deployer}
     )
 
-    await smartContract.sendTransaction({from: renter, value: 13423154})
+    await smartContract.sendTransaction({from: deployer})
 
     await smartContract.sendValueToRenter({from: deployer})
 
